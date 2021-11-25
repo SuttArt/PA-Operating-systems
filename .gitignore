@@ -1,5 +1,6 @@
 obj/
-
+A/
+B/
 .idea
 
 *.exe
