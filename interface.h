@@ -4,7 +4,9 @@
 #include <sys/stat.h>
 
 
+
 //Precompiler-Variablen
+#define K_ESC 27
 #define pathA "./A"
 #define pathB "./B"
 
@@ -19,6 +21,7 @@ typedef struct DataList
 DataList; //this is ONE node in the List
 
 //Protorypen
+int getch(void);
 void createTestData (int number);
 int checkDir(void);
 void makeDir(char* nameOfDirectory);
@@ -26,7 +29,7 @@ void makeList(char* nameOfFile);
 void iterateList(void);
 void iterateListAndCopy(char* path);
 void deleteList(void);
-void copyData(char* path);
+void copyDataToList(char* path);
 void deleteOldData(char* path);
 
 //global Variables

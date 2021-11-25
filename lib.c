@@ -80,6 +80,10 @@ void iterateList(void)
     //current/working Node of the List
     DataList* current = gFirstData;
 
+    if (current == NULL)
+    {
+        printf("\nSeems your List is Empty...\n");
+    }
     while (current != NULL)
     {
         printf("\n== my address: %p == name of file: %s == address of next: %p",current ,current->name, current->next);
@@ -143,9 +147,11 @@ void deleteList(void)
         free(current);
         current = x;
     }
+    gFirstData = NULL;
+    gLastData = NULL;
 }
 
-void copyData(char* pathFrom)
+void copyDataToList(char* pathFrom)
 {
     DIR* dir;
     char tmp [80];
@@ -160,9 +166,7 @@ void copyData(char* pathFrom)
             if (strcmp(tmp, ".") == 1 && strcmp(tmp,"..") == 1) //(tmp[0] != '.' || (tmp[0] != '.' && tmp[1] != '.'))
             {
                 makeList(tmp);
-
             }
-            iterateListAndCopy(pathFrom);
         }
     }
 }

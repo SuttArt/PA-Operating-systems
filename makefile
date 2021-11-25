@@ -31,10 +31,12 @@ run:
 clean:
 	@echo Deleting obj- A- B-folder, obj- and exe-files and all Test-files...
 	if exist .\obj rmdir /s /q obj
+	if exist .\A rmdir /s /q A
+	if exist .\B rmdir /s /q B
 	if exist *.exe del *.exe
 	if exist *.o del *.o
 
-FILES_TO_ZIP := main.c,thread.c,lib.c,interface.h,makefile,.gitignore, .\A, .\B
+FILES_TO_ZIP := main.c,thread.c,lib.c,interface.h,makefile,.gitignore
 
 zip:
 	@powershell Compress-Archive $(FILES_TO_ZIP) -Force ./Suttar.zip
