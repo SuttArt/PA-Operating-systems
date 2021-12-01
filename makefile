@@ -6,9 +6,9 @@ $(shell if not exist .\obj mkdir obj)
 
 
 # Linker, create pa.exe file
-pa.exe : obj/main.o obj/thread.o obj/lib.o
+pa.exe : obj/main.o obj/thread.o obj/lib.o obj/inifini.o obj/datalistlib.o
 	@echo Linking ...
-	gcc -o pa.exe obj/main.o obj/thread.o obj/lib.o
+	gcc -o pa.exe obj/main.o obj/thread.o obj/lib.o obj/inifini.o obj/datalistlib.o
 
 # Compiler, create objects files
 obj/main.o: main.c interface.h
@@ -22,6 +22,14 @@ obj/thread.o: thread.c interface.h
 obj/lib.o: lib.c interface.h
 	@echo Compiling lib.o...
 	gcc -c -o obj/lib.o lib.c
+
+obj/inifini.o: inifini.c interface.h
+	@echo Compiling lib.o...
+	gcc -c -o obj/inifini.o inifini.c
+
+obj/datalistlib.o: datalistlib.c interface.h
+	@echo Compiling lib.o...
+	gcc -c -o obj/datalistlib.o datalistlib.c
 
 
 run:

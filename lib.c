@@ -1,5 +1,14 @@
 #include "interface.h"
 
+/*
+ * Function: createTestData
+ * ------------------------
+ *  brief: create some test .txt data and write to each file some text
+ *
+ *  1 parameter: int,   number of files to create
+ *
+ *  return: void
+ */
 void createTestData (int number)
 {
     int i;
@@ -22,7 +31,15 @@ void createTestData (int number)
     }
 
 }
-
+/*
+ * Function: checkDir
+ * ------------------
+ *  brief: checks if the folder with the program contains the pathA(./A) folder and the pathB(./B) folder
+ *
+ *  return: int,    1 - if there is no pathA(./A) folder
+ *                  2 - if there is no pathB(./B) folder
+ *                  3 - if there is no pathA(./A) and pathB(./B) folder
+ */
 int checkDir(void)
 {
     //struct from <sys/stat.h>, we need it for stat()
@@ -45,132 +62,30 @@ int checkDir(void)
     return i;
 }
 
+/*
+ * Function: makeDir
+ * -----------------
+ *  brief: create some folder
+ *
+ *  1 parameter: char,  name of folder
+ *
+ *  return: void
+ */
 void makeDir(char* nameOfDirectory)
 {
     //create the Directory. There some mode, I think we do not need it => int mkdir(const char *path, mode_t mode);
     mkdir(nameOfDirectory);
 }
 
-void makeList(char* nameOfFile)
-{
-    //current/working Node of the List
-    DataList* current = NULL;
-
-    int gDataListsize = sizeof (DataList);
-
-    current = (DataList*) malloc(gDataListsize); //Storage reservation
-    strcpy(current -> name, nameOfFile);
-    current -> mutex = 0;
-    current -> threadNr = 0;
-    current -> next = NULL;
-
-    if (gFirstData == NULL) //list is empty
-    {
-        gFirstData = current;
-    }
-    else
-    {
-        gLastData -> next = current;
-    }
-    gLastData = current;
-}
-
-void iterateList(void)
-{
-    //current/working Node of the List
-    DataList* current = gFirstData;
-
-    if (current == NULL)
-    {
-        printf("\nSeems your List is Empty...\n");
-    }
-    while (current != NULL)
-    {
-        printf("\n== my address: %p == name of file: %s == address of next: %p",current ,current->name, current->next);
-        current = current->next;
-
-    }
-}
-
-void iterateListAndCopy(char* path)
-{
-    //current/working Node of the List
-    DataList* current = gFirstData;
-    // full name of source name
-    char name_in[80];
-    //full name of target file
-    char name_out[80];
-    FILE* fptrIn;
-    FILE* fptrOut;
-    int ch;
-
-    while (current != NULL)
-    {
-        snprintf(name_in, 80, "%s/%s",path, current -> name);
-        if(pathA)
-        {
-            snprintf(name_out, 80, "%s/%s",pathB, current -> name);
-        }
-        else
-        {
-            snprintf(name_out, 80, "%s/%s",pathA, current -> name);
-        }
-
-
-
-        fptrIn = fopen(name_in,"rb"); //r - Read b - Binary
-        fptrOut = fopen(name_out,"wb");// w - write
-
-        while ((ch=fgetc(fptrIn)) != EOF) //EOF - End Of File
-        {
-            fputc(ch,fptrOut);
-        }
-
-        fclose(fptrIn);
-        fclose(fptrOut);
-
-        current = current->next;
-    }
-}
-
-void deleteList(void)
-{
-    //current/working Node of the List
-    DataList* current = gFirstData;
-    //temporary Node of the List
-    DataList* x = NULL;
-
-    while (current != NULL)
-    {
-        printf("\nDelete: %s", current->name);
-        x = current->next;
-        free(current);
-        current = x;
-    }
-    gFirstData = NULL;
-    gLastData = NULL;
-}
-
-void copyDataToList(char* pathFrom)
-{
-    DIR* dir;
-    char tmp [80];
-    struct dirent* d_pntr;
-
-    dir = opendir(pathFrom);
-    if(dir != NULL)
-    {
-        while ((d_pntr = readdir(dir)) != NULL)
-        {
-            strcpy(tmp,d_pntr -> d_name);
-            if (strcmp(tmp, ".") == 1 && strcmp(tmp,"..") == 1) //(tmp[0] != '.' || (tmp[0] != '.' && tmp[1] != '.'))
-            {
-                makeList(tmp);
-            }
-        }
-    }
-}
-
+/*
+ * Function: copyDataToList
+ * ------------------------
+ *  brief: delete all data from the path
+ *
+ *  1 parameter: char,  path from where to delete data
+ *
+ *  return: void
+ */
 void deleteOldData(char* path)
 {
     //current/working Node of the List
@@ -183,4 +98,127 @@ void deleteOldData(char* path)
         remove(tmp);
         current = current->next;
     }
+}
+
+/*
+ * Function: gotoXY
+ * ----------------
+ *  brief: set our cursor at the Console to the (x,y) position
+ *
+ *  1 parameter: int,  column number
+ *  1 parameter: int,  line number
+ *
+ *  return: void
+ */
+void gotoXY (int x, int y)
+{
+    COORD coordinate;
+    coordinate.X = x;
+    coordinate.Y = y;
+    //Handle Console Buffer
+    HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    SetConsoleCursorPosition(handle, coordinate);
+}
+
+/*
+ * Function: createFrame
+ * ----------------
+ *  brief: create user interface in the console
+ *
+ *  return: void
+ */
+void createFrame (void)
+{
+    int i,j;
+
+    for (i=0; i < FRAMEWIDTH; i++)
+    {
+        gotoXY(i,0);
+        printf("=");
+
+        gotoXY(24,1);
+        printf("Control:");
+        gotoXY(1,2);
+        printf("If you want to create test data type 1");
+        gotoXY(1,3);
+        printf("If you want to copy test data from A to B type 2");
+        gotoXY(1,4);
+        printf("If you want to delete test data from A type 3");
+        gotoXY(1,5);
+        printf("If you want to Iterate the List type 4");
+        gotoXY(1,6);
+        printf("If you want to complete the work - click Esc");
+
+        gotoXY(69,1);
+        printf("Threads overview:");
+
+        if (!(i > SATUSAREA_X))
+        {
+            gotoXY(i,7);
+            printf("-");
+        }
+
+
+    }
+
+    for(j=0; j <= FRAMEHEIGHT; j++)
+    {
+        gotoXY(0,j);
+        printf("|");
+        if(j!=0)
+        {
+            gotoXY(SATUSAREA_X,j);
+            printf("|");
+        }
+        gotoXY(FRAMEWIDTH,j);
+        printf("|");
+    }
+}
+
+/*
+ * Function: CursorOnOff
+ * --------------------
+ *  brief: turn Cursor On or Off in the Console
+ *
+ *  1 parameter: int,   if 1 - ON
+ *                      if 0 - OFF
+ *
+ *  return: void
+ */
+void CursorOnOff(int x)  //  cursor 1/0 = ON/OFF
+{
+    if ( x == 0 || x == 1 )
+    {
+        HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+        CONSOLE_CURSOR_INFO info;
+        info.dwSize = 10;  //  size of cursor
+        info.bVisible = x;
+        SetConsoleCursorInfo(consoleHandle, &info);
+    }
+}
+
+void clearStatusArea(void)
+{
+    int i,j;
+    int frameheightLocal;
+
+    if (gNumberOfNodes>21)
+    {
+        frameheightLocal = gNumberOfNodes;
+    }
+    else
+    {
+        frameheightLocal = FRAMEHEIGHT;
+    }
+
+    for(i=1; i < SATUSAREA_X; i++)
+    {
+        for(j=SATUSAREA_Y; j < frameheightLocal; j++)
+        {
+            gotoXY(i,j);
+            printf(" ");
+        }
+    }
+
 }
