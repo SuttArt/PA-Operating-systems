@@ -6,25 +6,25 @@ void* ThrdFunc (void* arg)
     //current/working Node of the List
     DataList* current = gFirstData;
     int i;
-    while (current != NULL)
-    {
+
         for(i=0; i < TCOUNT; i++)
         {
             if(pthread_mutex_trylock(&mutex[i]) == 0)
             {
+                while (current != NULL)
+                {
                 if(current -> threadNr == 0)
                 {
                     current -> threadNr = *ID;
                     current -> mutex = &mutex[i];
                     Cpy(current ->name);
-                    printf("\nAFTER COPY name of file: %s, id of Thread: %d, id of Mutex: %d", current->name, current ->threadNr, current ->mutex);
                     sleep(2);
                 }
                 pthread_mutex_unlock(&mutex[i]);
+                    current = current->next;
+                }
             }
         }
-        current = current->next;
-    }
 }
 
 
@@ -42,6 +42,5 @@ void InitThread (void)
     {
         pthread_join(ID[i], NULL);
     }
-    
 
 };
