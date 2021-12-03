@@ -69,7 +69,7 @@ void ShowList(void)
     while (current != NULL)
     {
         gotoXY(1,i);
-        printf("name of file: %s", current->name);
+        printf("name of file: %s, id of Thread: %d, id of Mutex: %d", current->name, current ->threadNr, current ->mutex);
         current = current->next;
         i++;
     }

@@ -6,29 +6,25 @@ void* ThrdFunc (void* arg)
     //current/working Node of the List
     DataList* current = gFirstData;
     int i;
-
-    for(i=0; i < gNumberOfNodes; i++)
+    while (current != NULL)
     {
-        if(pthread_mutex_trylock(&mutex[i]) == 0)
+        for(i=0; i < TCOUNT; i++)
         {
-            if(current -> threadNr == 0)
+            if(pthread_mutex_trylock(&mutex[i]) == 0)
             {
-                current -> threadNr = *ID;
-                current -> mutex = &mutex[i];
-                Cpy(current ->name);
-                sleep(2);
-                current = current->next;
+                if(current -> threadNr == 0)
+                {
+                    current -> threadNr = *ID;
+                    current -> mutex = &mutex[i];
+                    Cpy(current ->name);
+                    printf("\nAFTER COPY name of file: %s, id of Thread: %d, id of Mutex: %d", current->name, current ->threadNr, current ->mutex);
+                    sleep(2);
+                }
+                pthread_mutex_unlock(&mutex[i]);
             }
-            pthread_mutex_unlock(&mutex[i]);
-            current = current->next;
         }
-        else
-        {
-            current = current->next;
-        }
-
+        current = current->next;
     }
-
 }
 
 
@@ -36,11 +32,6 @@ void InitThread (void)
 {
     pthread_t ID[TCOUNT];
     int i;
-
-    for(i=0; i<gNumberOfNodes; i++){
-        pthread_mutex_init(&mutex[i], NULL);
-
-    }
 
     for(int i=0; i < TCOUNT; i++)
     {
@@ -50,11 +41,7 @@ void InitThread (void)
     for(i=0; i < TCOUNT; i++)
     {
         pthread_join(ID[i], NULL);
-
     }
-
-    for(i=0; i<gNumberOfNodes; i++) {
-        pthread_mutex_destroy(&mutex[i]);
-    }
+    
 
 };

@@ -56,4 +56,4 @@ DataList* gLastData;    // 2. Node in the List
 int gDataListsize;   //Size of the DataList
 int gNumberOfNodes; //Number of the Nodes in DataList
 pthread_mutex_t gLock;
-pthread_mutex_t mutex[50]; //I'm not sure if it correct
+pthread_mutex_t mutex[TCOUNT]; //I'm not sure if it correct

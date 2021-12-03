@@ -44,7 +44,7 @@ clean:
 	if exist *.exe del *.exe
 	if exist *.o del *.o
 
-FILES_TO_ZIP := main.c,thread.c,lib.c,interface.h,makefile,.gitignore
+FILES_TO_ZIP := main.c,thread.c,lib.c,interface.h,makefile,.gitignore, inifini.c, datalistlib.c
 
 zip:
 	@powershell Compress-Archive $(FILES_TO_ZIP) -Force ./Suttar.zip

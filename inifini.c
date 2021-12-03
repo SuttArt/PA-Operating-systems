@@ -2,6 +2,7 @@
 
 void init(void)
 {
+    int i;
     CursorOnOff(0);
     createFrame();
 
@@ -29,18 +30,32 @@ void init(void)
     gLastData = gFirstData;
     gDataListsize = 0;
     gNumberOfNodes = 0;
+
+
+    for(i=0; i<TCOUNT; i++){
+        pthread_mutex_init(&mutex[i], NULL);
+    }
+    pthread_mutex_init(&gLock, NULL);
+
     GenList();
 }
 
 void finish(void)
 {
+    int i;
     DataList* current = gFirstData;
 
-    while(current != NULL)
+/*    while(current != NULL)
     {
         pthread_join(current -> threadNr,NULL);
         current = current -> next;
+    }*/
+
+    for(i=0; i<TCOUNT; i++) {
+        pthread_mutex_destroy(&mutex[i]);
     }
+
+    pthread_mutex_destroy(&gLock);
 
     gotoXY(0,FRAMEHEIGHT + 1);
     CursorOnOff(1);
