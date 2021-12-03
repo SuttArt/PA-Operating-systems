@@ -27,7 +27,6 @@ void createTestData (int number)
         fputs(text,fptr);
         // close the file
         fclose (fptr);
-
     }
 
 }
@@ -140,17 +139,17 @@ void createFrame (void)
         gotoXY(24,1);
         printf("Control:");
         gotoXY(1,2);
-        printf("If you want to create test data type 1");
+        printf("If you have new Files in ./A and you want to add the to the list type 1");
         gotoXY(1,3);
-        printf("If you want to copy test data from A to B type 2");
+        printf("If you want to copy test data from ./A to B type 2");
         gotoXY(1,4);
-        printf("If you want to delete test data from A type 3");
+        printf("If you want to delete test data from ./A type 3");
         gotoXY(1,5);
-        printf("If you want to Iterate the List type 4");
+        printf("If you want to show the List type 4");
         gotoXY(1,6);
         printf("If you want to complete the work - click Esc");
 
-        gotoXY(69,1);
+        gotoXY(SATUSAREA_X+5,1);
         printf("Threads overview:");
 
         if (!(i > SATUSAREA_X))
@@ -178,7 +177,7 @@ void createFrame (void)
 
 /*
  * Function: CursorOnOff
- * --------------------
+ * ---------------------
  *  brief: turn Cursor On or Off in the Console
  *
  *  1 parameter: int,   if 1 - ON
@@ -198,12 +197,19 @@ void CursorOnOff(int x)  //  cursor 1/0 = ON/OFF
     }
 }
 
+/*
+ * Function: clearStatusArea
+ * -------------------------
+ *  brief: Clear the Status Area at the Console
+ *
+ *  return: void
+ */
 void clearStatusArea(void)
 {
     int i,j;
     int frameheightLocal;
 
-    if (gNumberOfNodes>21)
+    if (gNumberOfNodes>20)
     {
         frameheightLocal = gNumberOfNodes;
     }

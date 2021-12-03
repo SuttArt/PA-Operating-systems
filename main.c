@@ -14,9 +14,8 @@ int main(void)
             case '1':
                 clearStatusArea();
                 gotoXY(1,SATUSAREA_Y);
-                printf("Create Test Data...");
-                createTestData(20);
-                copyDataToList(pathA);
+                printf("Add new Data...");
+                GenList();
                 break;
             case '2':
                 if(gFirstData == NULL)
@@ -30,7 +29,7 @@ int main(void)
                     clearStatusArea();
                     gotoXY(1,SATUSAREA_Y);
                     printf("Copy Test Data...");
-                    iterateListAndCopy(pathA);
+                    InitThread();
                 }
 
                 break;
@@ -53,7 +52,7 @@ int main(void)
                 break;
             case '4':
                 clearStatusArea();
-                iterateList();
+                ShowList();
                 break;
             default:
                 break;

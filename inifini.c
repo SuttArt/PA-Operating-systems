@@ -29,10 +29,20 @@ void init(void)
     gLastData = gFirstData;
     gDataListsize = 0;
     gNumberOfNodes = 0;
+    GenList();
 }
 
 void finish(void)
 {
+    DataList* current = gFirstData;
+
+    while(current != NULL)
+    {
+        pthread_join(current -> threadNr,NULL);
+        current = current -> next;
+    }
+
     gotoXY(0,FRAMEHEIGHT + 1);
     CursorOnOff(1);
+
 }

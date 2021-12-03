@@ -1,7 +1,7 @@
 #include "interface.h"
 
 /*
- * Function: makeList
+ * Function: Add2List
  * ------------------
  *  brief: create a List of DataList structure.
  *
@@ -9,13 +9,15 @@
  *
  *  return: void
  */
-void makeList(char* nameOfFile)
+void Add2List(char* nameOfFile)
 {
     //current/working Node of the List
     DataList* current = NULL;
     int gDataListsize = sizeof (DataList);
+    int found = 0;
 
     current = (DataList*) malloc(gDataListsize); //Storage reservation
+
     strcpy(current -> name, nameOfFile);
     current -> mutex = 0;
     current -> threadNr = 0;
@@ -29,23 +31,26 @@ void makeList(char* nameOfFile)
     }
     else
     {
-        if(!checkDuplicates(nameOfFile))
+
+        if(checkDuplicates(nameOfFile) == 0)
         {
             gLastData -> next = current;
             gNumberOfNodes++;
+            gLastData = current;
         }
     }
-    gLastData = current;
+
+
 }
 
 /*
- * Function: iterateList
- * ---------------------
+ * Function: ShowList
+ * ------------------
  *  brief: iterate through whole DataList structure and print some data of each Node
  *
  *  return: void
  */
-void iterateList(void)
+void ShowList(void)
 {
     //current/working Node of the List
     DataList* current = gFirstData;
@@ -55,6 +60,11 @@ void iterateList(void)
     {
         gotoXY(1,SATUSAREA_Y);
         printf("Seems your List is Empty...");
+        gotoXY(1,SATUSAREA_Y+1);
+        printf("I would create some Test Data for you.");
+        gotoXY(1,SATUSAREA_Y+2);
+        printf("Just type 1 and try show the list again.");
+        createTestData(20);
     }
     while (current != NULL)
     {
@@ -62,57 +72,6 @@ void iterateList(void)
         printf("name of file: %s", current->name);
         current = current->next;
         i++;
-    }
-}
-
-/*
- * Function: iterateListAndCopy
- * ----------------------------
- *  brief: iterate through whole DataList structure and Copy all Data from start path (pathA(./A) or pathB(./B))
- *         to the end path (depends of start path)
- *
- *  1 parameter: char,  start path, if pathA(./A) then copy to pathB(./B) and vice versa
- *
- *  return: void
- */
-void iterateListAndCopy(char* path)
-{
-    //current/working Node of the List
-    DataList* current = gFirstData;
-    // full name of source name
-    char name_in[80];
-    //full name of target file
-    char name_out[80];
-    FILE* fptrIn;
-    FILE* fptrOut;
-    int ch;
-
-    while (current != NULL)
-    {
-        snprintf(name_in, 80, "%s/%s",path, current -> name);
-        if(pathA)
-        {
-            snprintf(name_out, 80, "%s/%s",pathB, current -> name);
-        }
-        else
-        {
-            snprintf(name_out, 80, "%s/%s",pathA, current -> name);
-        }
-
-
-
-        fptrIn = fopen(name_in,"rb"); //r - Read b - Binary
-        fptrOut = fopen(name_out,"wb");// w - write
-
-        while ((ch=fgetc(fptrIn)) != EOF) //EOF - End Of File
-        {
-            fputc(ch,fptrOut);
-        }
-
-        fclose(fptrIn);
-        fclose(fptrOut);
-
-        current = current->next;
     }
 }
 
@@ -145,21 +104,19 @@ void deleteList(void)
 }
 
 /*
- * Function: copyDataToList
- * ------------------------
- *  brief: copy all data from the path to the DataList structure
- *
- *  1 parameter: char,  path from where to get the data
+ * Function: GenList
+ * -----------------
+ *  brief: copy all data from the pathA(./A) to the DataList structure
  *
  *  return: void
  */
-void copyDataToList(char* pathFrom)
+void GenList(void)
 {
     DIR* dir;
     char tmp [80];
     struct dirent* d_pntr;
 
-    dir = opendir(pathFrom);
+    dir = opendir(pathA);
     if(dir != NULL)
     {
         while ((d_pntr = readdir(dir)) != NULL)
@@ -167,16 +124,65 @@ void copyDataToList(char* pathFrom)
             strcpy(tmp,d_pntr -> d_name);
             if (strcmp(tmp, ".") == 1 && strcmp(tmp,"..") == 1) //(tmp[0] != '.' || (tmp[0] != '.' && tmp[1] != '.'))
             {
-                makeList(tmp);
+                //printf("\n%s", tmp);
+                Add2List(tmp);
             }
         }
     }
+    closedir(dir);
 }
 
+
+/*
+ * Function: Cpy
+ * -------------
+ *  brief: iterate through whole DataList structure and Copy all Data from start path (pathA(./A) to pathB(./B))
+ *
+ *  1 parameter: char,  name of the file to copy
+ *
+ *  return: void
+ */
+void Cpy(char* nameOfFile)
+{
+    pthread_mutex_lock(&gLock);
+    // full name of source name
+    char name_in[80];
+    //full name of target file
+    char name_out[80];
+    FILE* fptrIn;
+    FILE* fptrOut;
+    int ch;
+
+    snprintf(name_in, 80, "%s/%s",pathA, nameOfFile);
+    snprintf(name_out, 80, "%s/%s",pathB, nameOfFile);
+
+    fptrIn = fopen(name_in,"rb"); //r - Read b - Binary
+    fptrOut = fopen(name_out,"wb");// w - write
+
+    while ((ch=fgetc(fptrIn)) != EOF) //EOF - End Of File
+    {
+        fputc(ch,fptrOut);
+    }
+
+    fclose(fptrIn);
+    fclose(fptrOut);
+    pthread_mutex_unlock(&gLock);
+}
+
+
+/*
+ * Function: checkDuplicates
+ * -------------------------
+ *  brief: iterate through whole DataList structure and say if there some duplicate of file is
+ *
+ *  1 parameter: char,  name of the file to check
+ *
+ *  return: int,    1 or 0, found or not found
+ */
 int checkDuplicates(char* nameOfFile)
 {
     DataList* current = gFirstData;
-    int found;
+    int found = 0;
 
     while (current != NULL)
     {

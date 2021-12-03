@@ -2,17 +2,59 @@
 
 void* ThrdFunc (void* arg)
 {
-    int* Numb = (int*) arg; // Casting. It was : int* Numb = arg;
-    printf("\nThread has the number %2d",*Numb); // Before Casting in was printf("\nThread has the number %2d",Numb);
-    return 0;
+    int* ID = (int*) arg;
+    //current/working Node of the List
+    DataList* current = gFirstData;
+    int i;
+
+    for(i=0; i < gNumberOfNodes; i++)
+    {
+        if(pthread_mutex_trylock(&mutex[i]) == 0)
+        {
+            if(current -> threadNr == 0)
+            {
+                current -> threadNr = *ID;
+                current -> mutex = &mutex[i];
+                Cpy(current ->name);
+                sleep(2);
+                current = current->next;
+            }
+            pthread_mutex_unlock(&mutex[i]);
+            current = current->next;
+        }
+        else
+        {
+            current = current->next;
+        }
+
+    }
+
 }
 
-int mainq(void)
+
+void InitThread (void)
 {
-    pthread_t ID;
-    pthread_create(&ID, NULL, &ThrdFunc, &ID); //(&ID - For Operation System, NULL, &ThrdFunc - Funktion übergabe, &ID - Argument from ThrdFunc(void* arg))
-    printf("From main(): %d", ID);
-    pthread_join(ID,NULL); // Thread abwarten
-    //sleep(3);
-    return 0;
-}
+    pthread_t ID[TCOUNT];
+    int i;
+
+    for(i=0; i<gNumberOfNodes; i++){
+        pthread_mutex_init(&mutex[i], NULL);
+
+    }
+
+    for(int i=0; i < TCOUNT; i++)
+    {
+        pthread_create(&ID[i], NULL, &ThrdFunc, &ID[i]);
+    }
+
+    for(i=0; i < TCOUNT; i++)
+    {
+        pthread_join(ID[i], NULL);
+
+    }
+
+    for(i=0; i<gNumberOfNodes; i++) {
+        pthread_mutex_destroy(&mutex[i]);
+    }
+
+};
