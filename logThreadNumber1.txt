@@ -1,0 +1,30 @@
+
+Name of the file: data0.txt
+ Number of Thread: 1
+ Number of Mutex: 4233600
+==========================
+
+Name of the file: data10.txt
+ Number of Thread: 1
+ Number of Mutex: 4233600
+==========================
+
+Name of the file: data13.txt
+ Number of Thread: 1
+ Number of Mutex: 4233600
+==========================
+
+Name of the file: data17.txt
+ Number of Thread: 1
+ Number of Mutex: 4233600
+==========================
+
+Name of the file: data19.txt
+ Number of Thread: 1
+ Number of Mutex: 4233600
+==========================
+
+Name of the file: data5.txt
+ Number of Thread: 1
+ Number of Mutex: 4233600
+==========================

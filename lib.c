@@ -228,3 +228,59 @@ void clearStatusArea(void)
     }
 
 }
+
+
+/*
+ * Function: createLog
+ * -------------------------
+ *  brief: Create .txt file for log of every thread
+ *
+ *  1 parameter: DataList*, Node of DataList
+ *
+ *  return: void
+ */
+void createLog(DataList* current)
+{
+    pthread_mutex_lock(&gLock);
+
+    char tmp[80];
+    char text[120];
+    FILE* fptr;
+
+
+    // put our string with the Path and the Data Name into the tmp
+    snprintf(tmp, 80, "./logThreadNumber%d.txt", current ->threadNr);
+    // open/write the data to the A-directory
+    fptr  = fopen (tmp, "ab");
+    //write something to the File
+    snprintf(text, 120, "\nName of the file: %s\n Number of Thread: %d\n Number of Mutex: %d\n==========================\n",
+             current ->name,current ->threadNr, current ->mutex);
+    fputs(text,fptr);
+    // close the file
+    fclose (fptr);
+
+    pthread_mutex_unlock(&gLock);
+
+}
+
+/*
+ * Function: createLog
+ * -------------------------
+ *  brief: delete .txt file for log of every thread
+ *
+ *  1 parameter: DataList*, Node of DataList
+ *
+ *  return: void
+ */
+void deleteLog(int ThreadNumber)
+{
+    pthread_mutex_lock(&gLock);
+
+    char tmp[80];
+
+    snprintf(tmp, 80, "./logThreadNumber%d.txt", ThreadNumber);
+    remove(tmp);
+
+    pthread_mutex_unlock(&gLock);
+
+}

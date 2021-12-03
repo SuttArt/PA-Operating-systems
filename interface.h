@@ -17,6 +17,7 @@
 #define pathA "./A"
 #define pathB "./B"
 #define TCOUNT 4
+#define THDELAY 2
 
 //Datatypes
 typedef struct DataList
@@ -49,6 +50,8 @@ void clearStatusArea(void);
 int checkDuplicates(char* nameOfFile);
 void InitThread (void);
 void* ThrdFunc (void* arg);
+void createLog(DataList* current);
+void deleteLog(int ThreadNumber);
 
 //global Variables
 DataList* gFirstData;   // 1. Node in the List

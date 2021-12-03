@@ -13,17 +13,22 @@ void* ThrdFunc (void* arg)
             {
                 while (current != NULL)
                 {
+
                 if(current -> threadNr == 0)
                 {
                     current -> threadNr = *ID;
                     current -> mutex = &mutex[i];
                     Cpy(current ->name);
-                    sleep(2);
+                    createLog(current);
+
+                    sleep(THDELAY);
                 }
-                pthread_mutex_unlock(&mutex[i]);
                     current = current->next;
                 }
+
+                pthread_mutex_unlock(&mutex[i]);
             }
+
         }
 }
 
@@ -33,7 +38,12 @@ void InitThread (void)
     pthread_t ID[TCOUNT];
     int i;
 
-    for(int i=0; i < TCOUNT; i++)
+    for(i=0; i <= TCOUNT; i++)
+    {
+        deleteLog(i);
+    }
+
+    for(i=0; i < TCOUNT; i++)
     {
         pthread_create(&ID[i], NULL, &ThrdFunc, &ID[i]);
     }
@@ -42,5 +52,4 @@ void InitThread (void)
     {
         pthread_join(ID[i], NULL);
     }
-
 };

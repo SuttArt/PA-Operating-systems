@@ -35,6 +35,7 @@ void init(void)
     for(i=0; i<TCOUNT; i++){
         pthread_mutex_init(&mutex[i], NULL);
     }
+
     pthread_mutex_init(&gLock, NULL);
 
     GenList();
