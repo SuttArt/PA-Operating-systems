@@ -60,11 +60,8 @@ void ShowList(void)
     {
         gotoXY(1,SATUSAREA_Y);
         printf("Seems your List is Empty...");
-        gotoXY(1,SATUSAREA_Y+1);
-        printf("I would create some Test Data for you.");
         gotoXY(1,SATUSAREA_Y+2);
         printf("Just type 1 and try show the list again.");
-        createTestData(20);
     }
     while (current != NULL)
     {

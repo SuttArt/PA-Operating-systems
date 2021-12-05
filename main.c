@@ -33,9 +33,9 @@ int main(void)
                     gotoXY(1,SATUSAREA_Y);
                     printf("Copy Test Data... Please, wait until a signal \"Done\".");
                     InitThread();
-//                    clearStatusArea();
-//                    gotoXY(1,SATUSAREA_Y);
-//                    printf("Done!");
+                    clearStatusArea();
+                    gotoXY(1,SATUSAREA_Y);
+                    printf("Done!");
                     gotoXY(SATUSAREA_X+1, 3);
                     printf("Number of threads: %d", TCOUNT);
                     gotoXY(SATUSAREA_X+1, 4);
@@ -67,7 +67,7 @@ int main(void)
                 {
                     clearStatusArea();
                     gotoXY(1,SATUSAREA_Y);
-                    printf("Delete Test Data...");
+                    printf("Delete Data...");
                     clearStatusArea();
                     deleteOldData(pathA);
                     deleteList();
@@ -76,6 +76,15 @@ int main(void)
             case '4': //show the Lis
                 clearStatusArea();
                 ShowList();
+                break;
+            case '5': //show the Lis
+                clearStatusArea();
+                gotoXY(1,SATUSAREA_Y);
+                printf("Create Test Data...");
+                createTestData(20);
+                clearStatusArea();
+                gotoXY(1,SATUSAREA_Y);
+                printf("Done!");
                 break;
             default:
                 break;

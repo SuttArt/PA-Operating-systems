@@ -147,6 +147,8 @@ void createFrame (void)
         gotoXY(1,5);
         printf("If you want to show the List type 4");
         gotoXY(1,6);
+        printf("If you want to create the Test Data (20 files) type 5");
+        gotoXY(1,7);
         printf("If you want to complete the work - click Esc");
 
         gotoXY(SATUSAREA_X+5,1);
@@ -154,7 +156,7 @@ void createFrame (void)
 
         if (!(i > SATUSAREA_X))
         {
-            gotoXY(i,7);
+            gotoXY(i,SATUSAREA_Y-1);
             printf("-");
         }
 
@@ -232,7 +234,7 @@ void clearStatusArea(void)
 
 /*
  * Function: createLog
- * -------------------------
+ * -------------------
  *  brief: Create .txt file for log of every thread
  *
  *  1 parameter: DataList*, Node of DataList
@@ -264,8 +266,8 @@ void createLog(DataList* current)
 }
 
 /*
- * Function: createLog
- * -------------------------
+ * Function: deleteLog
+ * -------------------
  *  brief: delete .txt file for log of every thread
  *
  *  1 parameter: DataList*, Node of DataList
@@ -274,13 +276,12 @@ void createLog(DataList* current)
  */
 void deleteLog(int ThreadNumber)
 {
-    pthread_mutex_lock(&gLock);
 
     char tmp[80];
 
     snprintf(tmp, 80, "./logThreadNumber%d.txt", ThreadNumber);
     remove(tmp);
 
-    pthread_mutex_unlock(&gLock);
 
 }
+

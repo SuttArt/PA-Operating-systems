@@ -31,11 +31,6 @@ void init(void)
     gDataListsize = 0;
     gNumberOfNodes = 0;
 
-
-    for(i=0; i<TCOUNT; i++){
-        pthread_mutex_init(&mutex[i], NULL);
-    }
-
     pthread_mutex_init(&gLock, NULL);
 
     GenList();
@@ -46,13 +41,8 @@ void finish(void)
     int i;
     DataList* current = gFirstData;
 
-/*    while(current != NULL)
-    {
-        pthread_join(current -> threadNr,NULL);
-        current = current -> next;
-    }*/
 
-    for(i=0; i<TCOUNT; i++) {
+    for(i=0; i<gNumberOfNodes; i++) {
         pthread_mutex_destroy(&mutex[i]);
     }
 

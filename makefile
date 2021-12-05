@@ -42,6 +42,7 @@ clean:
 	if exist .\A rmdir /s /q A
 	if exist .\B rmdir /s /q B
 	if exist *.exe del *.exe
+	if exist *.txt del *.txt
 	if exist *.o del *.o
 
 FILES_TO_ZIP := main.c,thread.c,lib.c,interface.h,makefile,.gitignore, inifini.c, datalistlib.c

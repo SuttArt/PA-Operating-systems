@@ -9,15 +9,15 @@
 
 
 //Precompiler-Variablen
-#define K_ESC 27
-#define FRAMEWIDTH 100
-#define FRAMEHEIGHT 28
-#define SATUSAREA_X 72
-#define SATUSAREA_Y 8
-#define pathA "./A"
-#define pathB "./B"
-#define TCOUNT 4
-#define THDELAY 2
+#define K_ESC 27 //Esc Button
+#define FRAMEWIDTH 100 //Width of whole Frame
+#define FRAMEHEIGHT 28 //Height of whole Frame
+#define SATUSAREA_X 72 //X-coordinate of the end of Status Frame
+#define SATUSAREA_Y 9 //Y-coordinate of the start of Status Frame
+#define pathA "./A" //path to first Directory
+#define pathB "./B" //path to second Directory
+#define TCOUNT 4 //Number of Threads
+#define THDELAY 1 //Delay of threads executions
 
 //Datatypes
 typedef struct DataList
@@ -58,5 +58,5 @@ DataList* gFirstData;   // 1. Node in the List
 DataList* gLastData;    // 2. Node in the List
 int gDataListsize;   //Size of the DataList
 int gNumberOfNodes; //Number of the Nodes in DataList
-pthread_mutex_t gLock;
-pthread_mutex_t mutex[TCOUNT]; //I'm not sure if it correct
+pthread_mutex_t gLock; // Mutex
+pthread_mutex_t mutex[200]; //Also mutex, but it's array. PS:I'm not sure if it correct

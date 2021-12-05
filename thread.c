@@ -7,29 +7,28 @@ void* ThrdFunc (void* arg)
     DataList* current = gFirstData;
     int i;
 
-        for(i=0; i < TCOUNT; i++)
+    for(i=0; i < gNumberOfNodes; i++)
+    {
+        if(pthread_mutex_trylock(&mutex[i]) == 0)
         {
-            if(pthread_mutex_trylock(&mutex[i]) == 0)
+
+            if(current -> threadNr == 0)
             {
-                while (current != NULL)
-                {
+                current -> threadNr = *ID;
+                current -> mutex = &mutex[i];
+                Cpy(current ->name);
+                createLog(current);
 
-                if(current -> threadNr == 0)
-                {
-                    current -> threadNr = *ID;
-                    current -> mutex = &mutex[i];
-                    Cpy(current ->name);
-                    createLog(current);
-
-                    sleep(THDELAY);
-                }
-                    current = current->next;
-                }
-
-                pthread_mutex_unlock(&mutex[i]);
+                sleep(THDELAY);
             }
-
+            pthread_mutex_unlock(&mutex[i]);
         }
+
+        if(current -> next != NULL)
+        {
+            current = current->next;
+        }
+    }
 }
 
 
@@ -41,6 +40,10 @@ void InitThread (void)
     for(i=0; i <= TCOUNT; i++)
     {
         deleteLog(i);
+    }
+
+    for(i=0; i<gNumberOfNodes; i++){
+        pthread_mutex_init(&mutex[i], NULL);
     }
 
     for(i=0; i < TCOUNT; i++)
