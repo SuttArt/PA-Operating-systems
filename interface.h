@@ -11,7 +11,7 @@
 //Precompiler-Variablen
 #define K_ESC 27 //Esc Button
 #define FRAMEWIDTH 100 //Width of whole Frame
-#define FRAMEHEIGHT 28 //Height of whole Frame
+#define FRAMEHEIGHT 29 //Height of whole Frame
 #define SATUSAREA_X 72 //X-coordinate of the end of Status Frame
 #define SATUSAREA_Y 9 //Y-coordinate of the start of Status Frame
 #define pathA "./A" //path to first Directory
