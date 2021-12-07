@@ -40,7 +40,14 @@ void finish(void)
 {
     int i;
     DataList* current = gFirstData;
+    DataList* tmp = NULL;
 
+    while (current == NULL)
+    {
+        tmp =current -> next;
+        free(current);
+        current = tmp;
+    }
 
     for(i=0; i<gNumberOfNodes; i++) {
         pthread_mutex_destroy(&mutex[i]);
