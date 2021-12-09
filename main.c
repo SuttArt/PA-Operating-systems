@@ -41,16 +41,16 @@ int main(void)
                         deleteLog(i);
                     }
 
-                    for(i=0; i<gNumberOfNodes; i++){
+                    for(int i=0; i<gNumberOfNodes; i++){
                         pthread_mutex_init(&mutex[i], NULL);
                     }
 
-                    for(i=0; i < TCOUNT; i++)
+                    for(int i=0; i < TCOUNT; i++)
                     {
                         pthread_create(&ID[i], NULL, &ThrdFunc, &ID[i]);
                     }
 
-                    for(i=0; i < TCOUNT; i++)
+                    for(int i=0; i < TCOUNT; i++)
                     {
                         pthread_join(ID[i], NULL);
                     }
