@@ -32,6 +32,7 @@ void init(void)
     gNumberOfNodes = 0;
 
     pthread_mutex_init(&gLock, NULL);
+    pthread_mutex_init(&gLockThrdFunc, NULL);
 
     GenList();
 }
@@ -51,11 +52,12 @@ void finish(void)
         current = tmp;
     }
 
-    for(i=0; i<gNumberOfNodes; i++) {
+/*    for(i=0; i<gNumberOfNodes; i++) {
         pthread_mutex_destroy(&mutex[i]);
-    }
+    }*/
 
     pthread_mutex_destroy(&gLock);
+    pthread_mutex_destroy(&gLockThrdFunc);
 
     gotoXY(0,FRAMEHEIGHT + 1);
     CursorOnOff(1);

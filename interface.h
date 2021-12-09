@@ -59,4 +59,6 @@ DataList* gLastData;    // 2. Node in the List
 int gDataListsize;   //Size of the DataList
 int gNumberOfNodes; //Number of the Nodes in DataList
 pthread_mutex_t gLock; // Mutex
-pthread_mutex_t mutex[200]; //Also mutex, but it's array. PS:I'm not sure if it correct
+pthread_mutex_t gLockThrdFunc; // Mutex for ThrdFunc
+
+//pthread_mutex_t mutex[200]; //Also mutex, but it's array. PS:I'm not sure if it correct

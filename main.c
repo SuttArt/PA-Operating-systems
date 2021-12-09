@@ -41,9 +41,9 @@ int main(void)
                         deleteLog(i);
                     }
 
-                    for(int i=0; i<gNumberOfNodes; i++){
+/*                    for(int i=0; i<gNumberOfNodes; i++){
                         pthread_mutex_init(&mutex[i], NULL);
-                    }
+                    }*/
 
                     for(int i=0; i < TCOUNT; i++)
                     {
