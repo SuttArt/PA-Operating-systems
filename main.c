@@ -32,7 +32,33 @@ int main(void)
                     clearStatusArea();
                     gotoXY(1,SATUSAREA_Y);
                     printf("Copy Test Data... Please, wait until a signal \"Done\".");
-                    InitThread();
+
+
+                    pthread_t ID[TCOUNT];
+                    int i;
+
+                    for(i=0; i <= TCOUNT; i++)
+                    {
+                        deleteLog(i);
+                    }
+
+                    for(i=0; i<gNumberOfNodes; i++){
+                        pthread_mutex_init(&mutex[i], NULL);
+                    }
+
+                    for(i=0; i < TCOUNT; i++)
+                    {
+                        pthread_create(&ID[i], NULL, &ThrdFunc, &ID[i]);
+                    }
+
+                    for(i=0; i < TCOUNT; i++)
+                    {
+                        pthread_join(ID[i], NULL);
+                    }
+
+                    //InitThread();
+
+
                     clearStatusArea();
                     gotoXY(1,SATUSAREA_Y);
                     printf("Done!");

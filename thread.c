@@ -32,6 +32,7 @@ void* ThrdFunc (void* arg)
 }
 
 
+/*
 void InitThread (void)
 {
     pthread_t ID[TCOUNT];
@@ -56,3 +57,4 @@ void InitThread (void)
         pthread_join(ID[i], NULL);
     }
 };
+*/
