@@ -35,9 +35,8 @@ int main(void)
 
 
                     pthread_t ID[TCOUNT];
-                    int i;
 
-                    for(i=0; i <= TCOUNT; i++)
+                    for(int i=0; i <= TCOUNT; i++)
                     {
                         deleteLog(i);
                     }

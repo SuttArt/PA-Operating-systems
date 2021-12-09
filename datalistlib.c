@@ -121,7 +121,6 @@ void GenList(void)
             strcpy(tmp,d_pntr -> d_name);
             if (strcmp(tmp, ".") == 1 && strcmp(tmp,"..") == 1) //(tmp[0] != '.' || (tmp[0] != '.' && tmp[1] != '.'))
             {
-                //printf("\n%s", tmp);
                 Add2List(tmp);
             }
         }
