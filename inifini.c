@@ -42,6 +42,8 @@ void finish(void)
     DataList* current = gFirstData;
     DataList* tmp = NULL;
 
+    ShowList();
+
     while (current == NULL)
     {
         tmp =current -> next;
